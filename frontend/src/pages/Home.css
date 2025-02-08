@@ -1,0 +1,82 @@
+/* Home.css */
+.home-container {
+    padding: 2rem;
+    font-family: inherit;
+    color: inherit;
+    text-align: center;
+    width: 100vw;
+    /* max-width: 100%; */
+  }
+  
+  .input-section {
+    display: flex;
+    justify-content: stretch;
+    gap: 2rem;
+    width: 80%;
+    margin: 0 auto 2rem auto; 
+    flex-wrap: nowrap; 
+  }
+  
+  .card {
+    background-color: var(--card-bg, black);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    flex: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; 
+}
+  
+  .input-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .radio-group {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    font-weight: 500;
+    justify-content: center;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+    width: 80%;
+    justify-content: center;
+  }
+  
+  .input-group input[type="text"],
+  .input-group textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #111; 
+    color: white; 
+}
+
+  
+  .action-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #646cff;
+    color: #aaa;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .action-button:hover {
+    background-color: #535bf2;
+  }
+  

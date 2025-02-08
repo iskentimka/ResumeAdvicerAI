@@ -1,0 +1,100 @@
+/* Center and resize download container */
+.download-container {
+    width: 80vw;
+    max-width: 1000px;
+    height: auto;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    font-family: inherit;
+    color: inherit;
+    background-color: #222;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Title styling */
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Back Button (Above Table) */
+.back-button {
+    margin-bottom: 1.5rem; /* Adds spacing between back button and table */
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff6464;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #e04a4a;
+}
+
+/* Table Container */
+.log-table-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Table Styling */
+.log-table {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+.log-table th,
+.log-table td {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    text-align: left;
+    font-size: 1.1rem;
+}
+
+/* Header row */
+.log-table th {
+    background-color: #646cff;
+    color: #fff;
+}
+
+/* No changes message */
+.no-changes {
+    text-align: center;
+    font-style: italic;
+    color: #bbb;
+}
+
+/* Download Button (Below Table) */
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem; /* Pushes download button below table */
+}
+
+/* Download Button Styling */
+.action-button {
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    background-color: #646cff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-button:hover {
+    background-color: #535bf2;
+}
