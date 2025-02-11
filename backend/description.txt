@@ -1,0 +1,27 @@
+About the job
+
+NOTE: 100% REMOTE, Monday-Friday 8:30AM – 4:30PM work in EST timezone.
+TYPE: Full-time
+SKILLS: 5-10+ years Senior Blockchain Developer, Solidity,Web3, Smart Contract, Node.js, JavaScript, MongoDB, Hardhat, Truffle, Agile/Scrum, Jira, CI/CD pipelines, AWS, Azure, Ethereum  
+INDUSTRY: Industrial Management
+Description:
+
+Seeking a Blockchain Developer to work on mission-critical applications, utilizing blockchain technology to enhance AI-driven solutions. As a Blockchain Developer, you will play a key role in developing decentralized applications (dApps) and integrating blockchain with cutting-edge AI innovations to create secure, scalable, and efficient systems.
+
+You will collaborate within an Agile framework to build and maintain complex software systems, working with a combination of blockchain, AI, and other emerging technologies. This is an exciting opportunity to contribute to the development of AI-powered solutions with blockchain at their core, pushing the boundaries of innovation while continuously advancing your technical expertise.
+
+Key Responsibilities:
+
+Blockchain & AI Integration: Develop blockchain-based solutions that integrate with AI models and frameworks to enhance data security, transparency, and efficiency in various applications.
+
+Smart Contract & dApp Development: Design, develop, and optimize smart contracts and decentralized applications (dApps) that leverage AI technology for advanced functionalities.
+
+AI Model Integration: Work alongside AI engineers to integrate blockchain with machine learning models, ensuring seamless data flow and secure transactions.
+
+API Development: Build and maintain APIs that enable secure communication between blockchain systems and AI components, enhancing the overall performance and capabilities of AI-driven applications.
+
+Security & Compliance: Ensure the security of blockchain and AI applications, implementing best practices for cryptographic solutions, data privacy, and industry-specific compliance requirements.
+
+Collaboration with Cross-Functional Teams: Work in collaboration with AI researchers, data scientists, front-end and back-end developers, and DevOps engineers to deliver full-stack blockchain and AI solutions.
+
+NOTE: We openly welcome and invite applications from persons with disabilities or those protected by the human rights code and provide accommodation during all stages of the recruitment and hiring process, upon request.

@@ -1,0 +1,38 @@
+</content> 
+Given the following resume parts with index for each section and description of the job. Your task is to modify each section with adding information to be more suitable for the given job description. You should returns only JSON with edited parts.
+Example:
+    - Input:
+        - resume parts:
+            "
+                [
+                    {
+                        "name": 'Summary',
+                        "index": 0,
+                        "text" : 'I am senior enginner with experience in Java.'
+                    },
+                    {
+                        "name": 'Skills',
+                        "index": 1,
+                        "text" : 'Java, Python and etc.'
+                    }
+                ]
+            "
+        - job description:
+            - Need a developer with 3 years Java and Spring experience.
+    - Your responce:
+        - JSON:
+            "
+                [
+                    {
+                        "name": 'Summary',
+                        "index": 0,
+                        "text" : 'I am senior enginner with 3 years experience in Java and Spring Core.'
+                    },
+                    {
+                        "name": 'Skills',
+                        "index": 1,
+                        "text" : 'Java, Sping Core, Python.'
+                    }
+                ]
+            "
+</>
