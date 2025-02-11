@@ -148,7 +148,7 @@ class Parser:
 
 
 if __name__ == "__main__":
-    API_KEY = "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"
+    API_KEY = ""
 
     extractor = Extractor()
     extractorAI = ExtractorAI(api_key=API_KEY)
