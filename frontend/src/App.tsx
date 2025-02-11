@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { jsPDF } from 'jspdf';
 import Home from './pages/Home';
 import Download from './pages/Download';
 
@@ -54,19 +53,52 @@ const App: React.FC = () => {
     addChangeLog('Job Description', 'Text updated');
   };
 
-  // --- Download handler using jsPDF ---
-  const downloadCV = () => {
-    const content = `Formatted CV:
-
-${useLatex ? `LaTeX Code: ${latexCode}` : cvFile ? `CV File: ${cvFile.name}` : 'No CV provided.'}
-
-Job Description:
-${jobDescIsLink ? `Link: ${jobDescLink}` : jobDescription}`;
-
-    const doc = new jsPDF();
-    doc.text(content, 10, 10);
-    doc.save('formatted_cv.pdf');
-    addChangeLog('Download', 'Formatted CV downloaded as PDF');
+  // --- Download handler ---
+  const downloadCV = async () => {
+    try {
+      const formData = new FormData();
+  
+      // Append CV input: either LaTeX code or an uploaded file.
+      if (useLatex) {
+        formData.append('latex_code', latexCode);
+      } else if (cvFile) {
+        formData.append('cv_file', cvFile);
+      }
+  
+      // Append Job Description input: either a link or a text description.
+      if (jobDescIsLink) {
+        formData.append('job_desc_link', jobDescLink);
+      } else {
+        formData.append('job_description', jobDescription);
+      }
+  
+      // *** Change the URL below to match your backend ***
+      const response = await fetch('http://localhost:8000/api/format-cv', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to format CV on the backend.');
+      }
+  
+      // The backend should return the PDF as a blob.
+      const blob = await response.blob();
+  
+      // Create a temporary URL and trigger a download.
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'formatted_cv.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+  
+      addChangeLog('Download', 'Formatted CV downloaded as PDF');
+    } catch (error) {
+      console.error('Error downloading formatted CV:', error);
+    }
   };
 
   return (

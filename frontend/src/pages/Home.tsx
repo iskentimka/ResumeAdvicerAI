@@ -114,7 +114,7 @@ const Home: React.FC<HomeProps> = ({
           </div>
         </div>
       </div>
-      {/* Format button directly beneath the input-section */}
+      {/* Format button */}
       <button className="action-button" onClick={onFormat}>
         Format
       </button>
