@@ -74,7 +74,7 @@ class ResumeFormatter:
         """Extract text from a DOCX file."""
         doc = docx.Document(docx_path)
         text = "\n".join([p.text for p in doc.paragraphs])
-        return text.strip()
+        return text
 
     def extract_from_latex(self, tex_path: str) -> str:
         """Extract and clean text from a LaTeX file."""
@@ -183,34 +183,47 @@ class ResumeFormatter:
         doc.close()
         return output_pdf
 
-    # --- DOCX Modification ---
-    def replace_text_docx(self, docx_path: str, modified_data, extracted_data) -> str:
+    def replace_text_docx(self, docx_path: str, map_between_old_and_new_data) -> str:
         """
-        Replaces parts of the DOCX text with modified text.
+        Replaces parts of the DOCX text with generated (new) text at the run level,
+        preserving the original formatting, style, and font.
+        
+        This implementation assumes that the text to be replaced is fully contained within a single run.
+        If the text spans multiple runs, additional logic is required.
         
         Parameters:
-          docx_path (str): Path to the input DOCX file.
-          modified_data (dict): Mapping from field names to new text.
-          extracted_data (dict): Mapping from field names to original text.
+        docx_path (str): Path to the input DOCX file.
+        map_between_old_and_new_data (dict): Mapping where each value is a dict with keys:
+            - "extracted": the original text (string or list of strings)
+            - "generated": the new text (string or list of strings)
         
         Returns:
-          str: Path to the modified DOCX file.
+        str: Path to the modified DOCX file.
         """
-        from docx import Document
-        doc = Document(docx_path)
-        # Loop over each paragraph.
-        for para in doc.paragraphs:
-            for field, new_text in modified_data.items():
-                old_text = extracted_data.get(field)
-                if not old_text:
-                    continue
-                if old_text == new_text:
-                    continue
-                if old_text in para.text:
-                    para.text = para.text.replace(old_text, new_text)
-        output_docx = docx_path.replace(".docx", "_modified.docx")
-        doc.save(output_docx)
-        return output_docx
+        from spire.doc import Document,FileFormat
+
+        doc = Document()
+        doc.LoadFromFile(docx_path)
+        
+        # Iterate over the mapping for each field
+        for item in map_between_old_and_new_data.values():
+            old_text = item["extracted"]
+            new_text = item["generated"]
+            # Iterate over each paragraph and then each run within the paragraph
+            
+            # document.LoadFromFile("Template1.doc")
+
+            # Find a specific text and replace all its instances with another text
+            doc.Replace(old_text, new_text, False, False)    
+         # Save the resulting document
+        output_path = docx_path.replace(".docx", "_modified.docx")
+        doc.SaveToFile(output_path, FileFormat.Docx2016)
+        doc.Close()
+        return 
+
+
+
+       
 
     # --- LaTeX Modification ---
     def replace_text_latex(self, tex_path: str, modified_data, extracted_data) -> str:
@@ -238,6 +251,37 @@ class ResumeFormatter:
         with open(output_tex, "w", encoding="utf-8") as file:
             file.write(content)
         return output_tex
+    
+    def map_extracted_to_generated(self,extracted_data, generated_data):
+        """
+        Maps texts from extracted AI data to the generated AI data using the index field.
+        
+        Parameters:
+            extracted_data (list): List of dictionaries with extracted AI data.
+            generated_data (list): List of dictionaries with generated AI data.
+        
+        Returns:
+            dict: A dictionary where keys are index values and values are dictionaries with 'extracted' and 'generated' text.
+        """
+        mapping = {}
+
+        # Convert generated_data into a dictionary for fast lookup by index
+        generated_dict = {item["index"]: item["text"] for item in generated_data}
+
+        # Iterate over extracted data and find corresponding generated text by index
+        for item in extracted_data:
+            index = item["index"]
+            extracted_text = item["text"]
+            generated_text = generated_dict.get(index, None)  # Get generated text, if exists
+            
+            mapping[index] = {
+                "name": item["name"],  # Include name for reference
+                "extracted": extracted_text,
+                "generated": generated_text
+            }
+
+        return mapping
+
 
 # ------------------------------------------------------------------------------
 # FastAPI Setup & Endpoint (Commented out for now)
@@ -271,36 +315,26 @@ class ResumeFormatter:
 # ------------------------------------------------------------------------------
 # Main block for testing
 # ------------------------------------------------------------------------------
+
 if __name__ == "__main__":
     API_KEY = "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"
     formatter = ResumeFormatter(API_KEY)
-    
-    # Example for PDF:
 
+    # Read the job description from file.
     with open("description.txt", "r", encoding="utf-8") as file:
         job_description = file.read()
     
+    # ---------------- DOCX Example ----------------
+    text_from_doc = formatter.extract_from_docx("resume_test.docx")
+    print(f"Extracted text from docx: {text_from_doc}\n")
     
-    # Example for DOCX:
-    docx_text = formatter.extract_from_docx("resume_test.docx")
-    print(f"Extracted text from DOCX: {docx_text}")
-    # Here you might use the same extracted_data/modified_data dictionaries if your prompts work the same way.
+    json_extracted_data = json.loads(extract_json_from_response(formatter.extract_editable_parts(text_from_doc).content))
+    print(f"Extracted by AI data: {json_extracted_data}\n")
 
-    generated_response = formatter.generate_new_description(docx_text, job_description=job_description)
-    raw_generated = extract_json_from_response(generated_response.content)
-    edited_parts_data = json.loads(raw_generated)
-    print(f"Edited parts (raw): {edited_parts_data}")
-    
-    modified_data = { part["name"]: part["text"] for part in edited_parts_data }
-    extracted_data = { part["name"]: part["text"] for part in docx_text }
-    print(f"Modified data: {modified_data}")
-    print(f"Extracted data: {extracted_data}")
-    
-    output_docx = formatter.replace_text_docx("resume_test.docx", modified_data, extracted_data)
-    print(f"Modified DOCX saved at: {output_docx}")
-    
-    # Example for LaTeX:
-    latex_text = formatter.extract_from_latex("resume_test.tex")
-    print(f"Extracted text from LaTeX: {latex_text}")
-    output_tex = formatter.replace_text_latex("resume_test.tex", modified_data, extracted_data)
-    print(f"Modified LaTeX saved at: {output_tex}")
+    json_generated_new_data = json.loads(extract_json_from_response(formatter.generate_new_description(json_extracted_data, job_description).content))
+    print(f"Generated by AI data: {json_generated_new_data}\n")
+
+    map_between_old_and_new_data = formatter.map_extracted_to_generated(json_extracted_data, json_generated_new_data)
+    print(f"Map between data: {map_between_old_and_new_data}\n")
+
+    formatter.replace_text_docx("resume_test.docx", map_between_old_and_new_data)

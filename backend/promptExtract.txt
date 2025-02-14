@@ -1,27 +1,7 @@
 </content> 
-Given the following resume text if they are there, extract and return each part with index:
-Example:
-   - Input: 
-      - Summary : "I am senior enginner with experience in Java."
-      - Skills : "Java, Python and etc."
-   - Your responce should look like in JSON:
-      "
-      [
-         {
-            name: 'Summary',
-            index: 0,
-            text : 'I am senior enginner with experience in Java.'
-         },
-         {
-            name: 'Skills',
-            index: 1,
-            text : 'Java, Python and etc.'
-         }
-      ]
-      "
-
+Do not extract names, numbers or contracts.
+Given the following resume text, extract and return each part with index, if they are there,:
 Extract the following parts of the resume:
-- Summary
 - Skills
 - Experience (only positions,but not company names)
 - Experience description, achivements
@@ -29,5 +9,18 @@ Extract the following parts of the resume:
 - Projects description
 - Technologies
 - Tools
-- Languages
+- Programming Languages
+Example:
+   - Input: 
+      - Skills : "Java, Python and etc."
+   - Your responce should look like in JSON:
+      "
+      [
+         {
+            name: 'Skills',
+            index: 1,
+            text : 'Java, Python and etc.'
+         }
+      ]
+      "
 </>

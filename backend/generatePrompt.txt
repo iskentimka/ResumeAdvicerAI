@@ -6,9 +6,9 @@ Example:
             "
                 [
                     {
-                        "name": 'Summary',
+                        "name": 'Projecct',
                         "index": 0,
-                        "text" : 'I am senior enginner with experience in Java.'
+                        "text" : 'The game on Python.'
                     },
                     {
                         "name": 'Skills',
@@ -24,9 +24,9 @@ Example:
             "
                 [
                     {
-                        "name": 'Summary',
+                        "name": 'Projects',
                         "index": 0,
-                        "text" : 'I am senior enginner with 3 years experience in Java and Spring Core.'
+                        "text" : 'The game on Python, Java and Spring'
                     },
                     {
                         "name": 'Skills',
