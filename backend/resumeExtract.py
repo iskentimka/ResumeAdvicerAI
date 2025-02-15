@@ -12,6 +12,7 @@ import re
 import fitz
 from pylatexenc.latex2text import LatexNodes2Text
 from openai import OpenAI  # Ensure you have the proper OpenAI client installed
+import subprocess
 
 # ------------------------------------------------------------------------------
 # Helper function to extract JSON string from API responses that may be wrapped in markdown code fences.
@@ -183,44 +184,6 @@ class ResumeFormatter:
         doc.close()
         return output_pdf
 
-    def replace_text_docx(self, docx_path: str, map_between_old_and_new_data) -> str:
-        """
-        Replaces parts of the DOCX text with generated (new) text at the run level,
-        preserving the original formatting, style, and font.
-        
-        This implementation assumes that the text to be replaced is fully contained within a single run.
-        If the text spans multiple runs, additional logic is required.
-        
-        Parameters:
-        docx_path (str): Path to the input DOCX file.
-        map_between_old_and_new_data (dict): Mapping where each value is a dict with keys:
-            - "extracted": the original text (string or list of strings)
-            - "generated": the new text (string or list of strings)
-        
-        Returns:
-        str: Path to the modified DOCX file.
-        """
-        from spire.doc import Document,FileFormat
-
-        doc = Document()
-        doc.LoadFromFile(docx_path)
-        
-        # Iterate over the mapping for each field
-        for item in map_between_old_and_new_data.values():
-            old_text = item["extracted"]
-            new_text = item["generated"]
-            # Iterate over each paragraph and then each run within the paragraph
-            
-            # document.LoadFromFile("Template1.doc")
-
-            # Find a specific text and replace all its instances with another text
-            doc.Replace(old_text, new_text, False, False)    
-         # Save the resulting document
-        output_path = docx_path.replace(".docx", "_modified.docx")
-        doc.SaveToFile(output_path, FileFormat.Docx2016)
-        doc.Close()
-        return 
-
 
 
        
@@ -281,6 +244,22 @@ class ResumeFormatter:
             }
 
         return mapping
+    
+    def run_csharp_replacer(input_docx: str, json_mapping: str, output_docx: str) -> str:
+        """
+        Calls the C# DocxTextReplacer executable to replace text in a DOCX file.
+        
+        Parameters:
+            input_docx (str): Path to the input DOCX file.
+            json_mapping (str): Path to the JSON mapping file with old/new texts.
+            output_docx (str): Path where the modified DOCX file will be saved.
+        
+        Returns:
+            str: Path to the modified DOCX file.
+        """
+        command = ["./bin/Release/net8.0/osx-x64/publish/DocxTextReplacer", input_docx, json_mapping, output_docx]
+        subprocess.run(command, check=True)
+        return output_docx
 
 
 # ------------------------------------------------------------------------------
@@ -336,5 +315,3 @@ if __name__ == "__main__":
 
     map_between_old_and_new_data = formatter.map_extracted_to_generated(json_extracted_data, json_generated_new_data)
     print(f"Map between data: {map_between_old_and_new_data}\n")
-
-    formatter.replace_text_docx("resume_test.docx", map_between_old_and_new_data)
