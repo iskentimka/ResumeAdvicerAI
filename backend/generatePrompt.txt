@@ -1,38 +1,34 @@
-</content> 
-Given the following resume parts with index for each section and description of the job. Your task is to modify each section with adding information to be more suitable for the given job description. You should returns only JSON with edited parts.
-Example:
-    - Input:
-        - resume parts:
-            "
-                [
-                    {
-                        "name": 'Projecct',
-                        "index": 0,
-                        "text" : 'The game on Python.'
-                    },
-                    {
-                        "name": 'Skills',
-                        "index": 1,
-                        "text" : 'Java, Python and etc.'
-                    }
-                ]
-            "
-        - job description:
-            - Need a developer with 3 years Java and Spring experience.
-    - Your responce:
-        - JSON:
-            "
-                [
-                    {
-                        "name": 'Projects',
-                        "index": 0,
-                        "text" : 'The game on Python, Java and Spring'
-                    },
-                    {
-                        "name": 'Skills',
-                        "index": 1,
-                        "text" : 'Java, Sping Core, Python.'
-                    }
-                ]
-            "
+</content>
+You are provided with a JSON object representing a section of a resume. The JSON object has the following keys:
+- "name": the title of the section (e.g., "Skills", "Project", "Experience")
+- "text": the content of that section
+
+You are also given a job description. Your task is to slightly modify the "text" field so that it better aligns with the job description. Do not include any extra formatting, explanations, or a JSON structure in your response – simply output the revised text.
+
+Guidelines:
+- For sections like "Skills", "Technologies", "Tools", or "Programming Languages", add or adjust relevant items if needed.
+- For "Experience" or "Project" sections, modify the text (e.g., job responsibilities, project description) slightly so it fits the job requirements. Do not include company names or unrelated details.
+- Output only the revised text as a plain string.
+
+Example 1:
+Input:
+{
+    "name": "Project",
+    "text": "The game on Python."
+}
+Job description:
+Need a developer with 3 years Java and Spring experience.
+Output:
+The game was written on Java and Spring.
+
+Example 2:
+Input:
+{
+    "name": "Skills",
+    "text": "Python, Java"
+}
+Job description:
+Need a developer with 3 years Java and Spring experience.
+Output:
+Python, Java, and Spring.
 </>

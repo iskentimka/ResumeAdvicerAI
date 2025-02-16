@@ -1,5 +1,5 @@
 # resumeExtract.py
-
+#source venv/bin/activate
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +13,17 @@ import fitz
 from pylatexenc.latex2text import LatexNodes2Text
 from openai import OpenAI  # Ensure you have the proper OpenAI client installed
 import subprocess
+import zipfile
+
+def save_docx_xml(docx_path, output_xml_path):
+    """Extracts XML from a DOCX file and saves it to a .xml file."""
+    with zipfile.ZipFile(docx_path, "r") as docx:
+        xml_content = docx.read("word/document.xml").decode("utf-8")  # Extract XML
+
+    # Save XML content to a file
+    with open(output_xml_path, "w", encoding="utf-8") as xml_file:
+        xml_file.write(xml_content)
+
 
 # ------------------------------------------------------------------------------
 # Helper function to extract JSON string from API responses that may be wrapped in markdown code fences.
@@ -56,20 +67,6 @@ class ResumeFormatter:
                     x0, y0, x1, y1, frag_text = word['x0'], word['top'], word['x1'], word['bottom'], word['text']
                     text_positions.append((page_num, x0, y0, x1, y1, frag_text))
         return (text.strip(), text_positions)
-
-    def extract_text_with_positions(self, pdf_path: str):
-        """
-        Extracts text with position information from a PDF.
-        Returns a list of tuples: (page_num, x0, y0, x1, y1, text)
-        """
-        text_positions = []
-        with pdfplumber.open(pdf_path) as pdf:
-            for page_num, page in enumerate(pdf.pages):
-                words = page.extract_words()
-                for word in words:
-                    x0, y0, x1, y1, frag_text = word['x0'], word['top'], word['x1'], word['bottom'], word['text']
-                    text_positions.append((page_num, x0, y0, x1, y1, frag_text))
-        return text_positions
 
     def extract_from_docx(self, docx_path: str) -> str:
         """Extract text from a DOCX file."""
@@ -116,77 +113,69 @@ class ResumeFormatter:
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
-        return response.choices[0].message
+        # Get the raw content from the message and strip any whitespace.
+        raw_content = response.choices[0].message.content.strip()
+        print("DEBUG: Raw response content:", raw_content)
+        
+        # If the raw content is empty, raise an error.
+        if not raw_content:
+            raise Exception("Received empty response from OpenAI API. Check your prompt, API key, or usage limits.")
+        
+        # Use the helper function to remove markdown fences (if any)
+        json_str = extract_json_from_response(raw_content)
+        print("DEBUG: Cleaned JSON content:", json_str)
+        
+        if not json_str:
+            raise Exception("After cleaning, the response content is empty.")
+        
+        try:
+            json_data = json.loads(json_str)
+        except Exception as e:
+            raise Exception(f"Error parsing JSON: {e}. Raw JSON string: {json_str}")
+        
+        with open("extracted_data.json", "w", encoding="utf-8") as json_file:
+            json.dump(json_data, json_file, indent=4)
+        return json_data
 
-    def generate_new_description(self, extracted_resume_text, job_description: str):
+    def get_generated_new_text(self, extracted_data, job_description: str):
         """
         Uses OpenAI to generate a new description based on the extracted
-        resume text and the job description. Expects a prompt template in 'generatePrompt.txt'.
+        resume section and the job description. Expects a prompt template in 'generatePrompt.txt'.
+        
+        For each extracted part, if a "description" exists, it is used; otherwise the "text" field is used.
+        
+        Returns a dictionary mapping an index to an object with:
+        - "section": the section name (e.g., "experience", "skills")
+        - "extracted": the original extracted text for that section
+        - "generated": the revised text returned by the API.
         """
         try:
             with open("generatePrompt.txt", "r", encoding="utf-8") as file:
-                prompt = file.read()
+                prompt_generate = file.read()
         except Exception as e:
             raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
-        prompt += f"</job_description>{job_description}</>\n</resume_parts>{extracted_resume_text}</>"
-
-        response = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return response.choices[0].message
-
-    # --- PDF Modification (Parsing) ---
-    def replace_text(self, pdf_path: str, modified_data, extracted_data, text_positions) -> str:
-        """
-        Replaces parts of the PDF text with modified text.
         
-        Parameters:
-          pdf_path (str): Path to the input PDF.
-          modified_data (dict): Mapping from field names to new text.
-          extracted_data (dict): Mapping from field names to original text.
-          text_positions (list): List of tuples (page_num, x0, y0, x1, y1, text) from the PDF.
+        result_map = {}
+        for i, part in enumerate(extracted_data):
+            # Use "description" if available; otherwise, fallback to "text".
+            content = part.get("description") or part.get("text") or ""
+            # Build the prompt.
+            prompt = prompt_generate + f"</job_description>{job_description}</>\n</resume_part>{content}</>"
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            generated_text = response.choices[0].message.content.strip()
+            result_map[i] = {
+                "section": part["section"],
+                "extracted": content,
+                "generated": generated_text
+            }
         
-        Returns:
-          str: Path to the modified PDF.
-        """
-        doc = fitz.open(pdf_path)
-
-        # Loop over each field that might have been edited.
-        for field, new_text in modified_data.items():
-            old_text = extracted_data.get(field)
-            print(f"OLD TEXT for '{field}': {old_text}")
-            if not old_text:
-                continue
-            if old_text == new_text:
-                continue
-
-            # Search for the old text in the text positions.
-            for (page_num, x0, y0, x1, y1, frag_text) in text_positions:
-                if old_text in frag_text:
-                    page = doc[page_num]
-                    rect = fitz.Rect(x0, y0, x1, y1)
-                    # Erase the old text.
-                    page.draw_rect(rect, color=(1, 1, 1), fill=(1, 1, 1))
-                    # Insert the new text.
-                    page.insert_textbox(
-                        rect,
-                        new_text,
-                        fontname="helv",
-                        fontsize=12,
-                        color=(0, 0, 0),
-                        align=0
-                    )
-                    break
-
-        output_pdf = pdf_path.replace(".pdf", "_modified.pdf")
-        doc.save(output_pdf)
-        doc.close()
-        return output_pdf
-
-
-
-       
+        with open("generated_data.json", "w", encoding="utf-8") as json_file:
+            json.dump(result_map, json_file, indent=4)
+        
+        return result_map
 
     # --- LaTeX Modification ---
     def replace_text_latex(self, tex_path: str, modified_data, extracted_data) -> str:
@@ -215,35 +204,6 @@ class ResumeFormatter:
             file.write(content)
         return output_tex
     
-    def map_extracted_to_generated(self,extracted_data, generated_data):
-        """
-        Maps texts from extracted AI data to the generated AI data using the index field.
-        
-        Parameters:
-            extracted_data (list): List of dictionaries with extracted AI data.
-            generated_data (list): List of dictionaries with generated AI data.
-        
-        Returns:
-            dict: A dictionary where keys are index values and values are dictionaries with 'extracted' and 'generated' text.
-        """
-        mapping = {}
-
-        # Convert generated_data into a dictionary for fast lookup by index
-        generated_dict = {item["index"]: item["text"] for item in generated_data}
-
-        # Iterate over extracted data and find corresponding generated text by index
-        for item in extracted_data:
-            index = item["index"]
-            extracted_text = item["text"]
-            generated_text = generated_dict.get(index, None)  # Get generated text, if exists
-            
-            mapping[index] = {
-                "name": item["name"],  # Include name for reference
-                "extracted": extracted_text,
-                "generated": generated_text
-            }
-
-        return mapping
     
     def run_csharp_replacer(input_docx: str, json_mapping: str, output_docx: str) -> str:
         """
@@ -260,6 +220,31 @@ class ResumeFormatter:
         command = ["./bin/Release/net8.0/osx-x64/publish/DocxTextReplacer", input_docx, json_mapping, output_docx]
         subprocess.run(command, check=True)
         return output_docx
+
+
+
+if __name__ == "__main__":
+    API_KEY = "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"
+    formatter = ResumeFormatter(API_KEY)
+
+    # Read the job description from file.
+    with open("description.txt", "r", encoding="utf-8") as file:
+        job_description = file.read()
+    
+    # ---------------- DOCX Example ----------------
+    text_from_doc = formatter.extract("resume_test.docx")
+    print(f"Extracted text from docx: {text_from_doc}\n")
+    save_docx_xml("resume_test.docx", "output.xml")
+    
+    
+    # extracted_data = formatter.extract_editable_parts(text_from_doc)
+    # print(f"Extracted by AI data: {extracted_data}\n")
+
+    # json_generated_new_data = formatter.get_generated_new_text(extracted_data, job_description)
+    # print(f"Generated by AI data: {json_generated_new_data}\n")
+
+    
+
 
 
 # ------------------------------------------------------------------------------
@@ -294,24 +279,3 @@ class ResumeFormatter:
 # ------------------------------------------------------------------------------
 # Main block for testing
 # ------------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    API_KEY = "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"
-    formatter = ResumeFormatter(API_KEY)
-
-    # Read the job description from file.
-    with open("description.txt", "r", encoding="utf-8") as file:
-        job_description = file.read()
-    
-    # ---------------- DOCX Example ----------------
-    text_from_doc = formatter.extract_from_docx("resume_test.docx")
-    print(f"Extracted text from docx: {text_from_doc}\n")
-    
-    json_extracted_data = json.loads(extract_json_from_response(formatter.extract_editable_parts(text_from_doc).content))
-    print(f"Extracted by AI data: {json_extracted_data}\n")
-
-    json_generated_new_data = json.loads(extract_json_from_response(formatter.generate_new_description(json_extracted_data, job_description).content))
-    print(f"Generated by AI data: {json_generated_new_data}\n")
-
-    map_between_old_and_new_data = formatter.map_extracted_to_generated(json_extracted_data, json_generated_new_data)
-    print(f"Map between data: {map_between_old_and_new_data}\n")

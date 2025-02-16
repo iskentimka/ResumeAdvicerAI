@@ -1,0 +1,45 @@
+[
+    {
+        "section": "experience",
+        "name": "Special Assistant to the Ambassador",
+        "description": "Participated in diplomatic meetings and events on behalf of the embassy, including engaging with the Director-General of FAO, visiting MOFA of Italy, and representing the country at the COFO27 hosted by FAO. Authored informative papers on the current diplomatic relations and activities related to Kyrgyzstan and Italy."
+    },
+    {
+        "section": "experience",
+        "name": "Full-Stack Mobile Developer",
+        "description": "Contributed in the development of a social media mobile application for musicians, using React Native and TypeScript for frontend and backend integration. Collaborated closely cross-functional teams to design, develop, and optimize mobile app features, ensuring high-quality performance. Implemented robust coding practices to build scalable, maintainable, and efficient software solutions."
+    },
+    {
+        "section": "experience",
+        "name": "Retail Business Owner",
+        "description": "Founded and operated an online retail platform specializing in LED home d\u00e9cor lamps. Single-handedly managed all facets of the business including finance, web design, product sourcing, logistics, and marketing. Developed and executed digital marketing strategies, including SEO optimization, to drive traffic and increase brand visibility. Utilized eCommerce platforms and tools to streamline order processing and customer management."
+    },
+    {
+        "section": "experience",
+        "name": "Game Manager RedBull Flick",
+        "description": "Navigated the gamers on the gaming platform, and the rules of the game. Monitored the gaming matches of various teams to make sure there were no rules violations. Provided technical support all the time as well as training for junior administrators."
+    },
+    {
+        "section": "project",
+        "name": "E-commerce Supplement Store - TypeScript",
+        "description": "Designed and developed a full-stack e-commerce website for selling supplements, utilizing React, Vite, and Tailwind CSS for the frontend and backend. Integrated Airtable API as a lightweight database solution to manage product listings and inventory efficiently."
+    },
+    {
+        "section": "project",
+        "name": "Restaurant Billing System - Java",
+        "description": "Using Java, I created a system that calculates the bill at a restaurant. The user (waiter or admin) can navigate through the system, select/remove items from tables, and proceed to checkout."
+    },
+    {
+        "section": "project",
+        "name": "Taxi Application - Flutter",
+        "description": "Collaborated in a team to develop a user-centric taxi application, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options."
+    },
+    {
+        "section": "skills",
+        "text": "Java, TypeScript, Python, React Native, Spring Boot, Express.js / Node.js, MySQL, Git & GitHub / GitLab, Agile & Scrum, RESTful API"
+    },
+    {
+        "section": "languages",
+        "text": "Russian (native), Kyrgyz (native), English (proficient), Italian (beginner)"
+    }
+]
