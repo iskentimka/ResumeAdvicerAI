@@ -19,3 +19,24 @@
 /Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.pdb
 /Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.genruntimeconfig.cache
 /Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/ref/DocxTextReplacer.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocxTextReplacer
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocxTextReplacer.deps.json
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocxTextReplacer.runtimeconfig.json
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocxTextReplacer.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocxTextReplacer.pdb
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocumentFormat.OpenXml.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/DocumentFormat.OpenXml.Framework.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/bin/Debug/net9.0/System.IO.Packaging.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.csproj.AssemblyReference.cache
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.GeneratedMSBuildEditorConfig.editorconfig
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.AssemblyInfoInputs.cache
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.AssemblyInfo.cs
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.csproj.CoreCompileInputs.cache
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.sourcelink.json
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxText.158504AB.Up2Date
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/refint/DocxTextReplacer.dll
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.pdb
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/DocxTextReplacer.genruntimeconfig.cache
+/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/Debug/net9.0/ref/DocxTextReplacer.dll

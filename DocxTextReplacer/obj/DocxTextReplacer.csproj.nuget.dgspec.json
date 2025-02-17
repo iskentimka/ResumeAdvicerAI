@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj": {}
+    "/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj": {}
   },
   "projects": {
-    "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj": {
+    "/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj",
+        "projectUniqueName": "/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj",
         "projectName": "DocxTextReplacer",
-        "projectPath": "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj",
-        "packagesPath": "/Users/edzhisk/.nuget/packages/",
-        "outputPath": "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/DocxTextReplacer/obj/",
+        "projectPath": "/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/DocxTextReplacer.csproj",
+        "packagesPath": "/Users/Rinat/.nuget/packages/",
+        "outputPath": "/Users/Rinat/Personal Projects/ResumeAdvicerAI/DocxTextReplacer/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/edzhisk/.nuget/NuGet/NuGet.Config"
+          "/Users/Rinat/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"

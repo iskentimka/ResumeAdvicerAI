@@ -1,80 +1,74 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 
 namespace DocxTextReplacer
 {
-    // Represents a replacement mapping in the expected format.
     public class Replacement
     {
-        [JsonProperty("old")]
-        public string Old { get; set; }
-        [JsonProperty("new")]
-        public string New { get; set; }
+        public string? Old { get; set; }
+        public string? New { get; set; }
     }
 
-    // Represents the structure of your JSON file.
     public class ReplacementMapping
     {
-        [JsonProperty("section")]
-        public string Section { get; set; }
-        [JsonProperty("extracted")]
-        public string Extracted { get; set; }
-        [JsonProperty("generated")]
-        public string Generated { get; set; }
+        public string? Section { get; set; }
+        public string? Extracted { get; set; }
+        public string? Generated { get; set; }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            // For debugging purposes, using fixed file paths.
-            string inputDocx = "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/backend/resume_test.docx";
-            string jsonMappingFile = "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/backend/generated_data.json";
-            string outputDocx = "/Users/edzhisk/Desktop/Projects/ResumeAdvicerAI/backend/resume_test_modified.docx";
+            // Example hard-coded paths:
+            string inputDocx = "/Users/Rinat/Personal Projects/ResumeAdvicerAI/backend/resume_test.docx";
+            string jsonMappingFile = "/Users/Rinat/Personal Projects/ResumeAdvicerAI/backend/generated_data.json";
+            string outputDocx = "/Users/Rinat/Personal Projects/ResumeAdvicerAI/backend/resume_test_modified.docx";
 
             if (!File.Exists(inputDocx) || !File.Exists(jsonMappingFile))
             {
-                Console.WriteLine("Error: Input DOCX file or JSON mapping file not found.");
+                Console.WriteLine("Error: Input DOCX or JSON file not found.");
                 return;
             }
 
             try
             {
-                // Read JSON mapping file.
+                // 1. Read JSON mapping
                 string jsonText = File.ReadAllText(jsonMappingFile);
-                // Deserialize the JSON object into a dictionary.
-                Dictionary<string, ReplacementMapping> mappingDict = JsonConvert.DeserializeObject<Dictionary<string, ReplacementMapping>>(jsonText);
-                // Convert the dictionary values into a list.
-                List<ReplacementMapping> mappingList = new List<ReplacementMapping>(mappingDict.Values);
+                var mappingDict = JsonConvert.DeserializeObject<Dictionary<string, ReplacementMapping>>(jsonText)
+                                  ?? new Dictionary<string, ReplacementMapping>();
 
-                // Convert mappingList into a list of Replacement objects.
-                List<Replacement> replacements = new List<Replacement>();
-                foreach (var mapping in mappingList)
+                // 2. Build replacements
+                var replacements = new List<Replacement>();
+                foreach (var kvp in mappingDict)
                 {
-                    if (!string.IsNullOrEmpty(mapping.Extracted) && !string.IsNullOrEmpty(mapping.Generated))
+                    var map = kvp.Value;
+                    if (!string.IsNullOrEmpty(map.Extracted) && !string.IsNullOrEmpty(map.Generated))
                     {
-                        replacements.Add(new Replacement { Old = mapping.Extracted, New = mapping.Generated });
-                    }
-                    else
-                    {
-                        //Console.WriteLine("Skipping a mapping because extracted or generated text is null/empty.");
+                        replacements.Add(new Replacement
+                        {
+                            Old = map.Extracted,
+                            New = map.Generated
+                        });
                     }
                 }
 
-                //Console.WriteLine("Loaded Replacements:");
-                foreach (var rep in replacements)
+                Console.WriteLine("----- Loaded Replacements -----");
+                foreach (var r in replacements)
                 {
-                    Console.WriteLine($"Old: {rep.Old} | New: {rep.New}");
+                    Console.WriteLine($"Old: {r.Old}\nNew: {r.New}\n");
                 }
+                Console.WriteLine("--------------------------------");
 
-                // Copy input DOCX to output DOCX (to preserve the original).
-                File.Copy(inputDocx, outputDocx, true);
+                // 3. Copy the docx
+                File.Copy(inputDocx, outputDocx, overwrite: true);
 
-                // Replace text in the DOCX file.
+                // 4. Run the merging replacer
                 ReplaceTextInDocx(outputDocx, replacements);
 
                 Console.WriteLine("Text replacement completed successfully.");
@@ -85,51 +79,121 @@ namespace DocxTextReplacer
             }
         }
 
+        /// <summary>
+        /// Merges consecutive runs that share the same style, does in-run 
+        /// replacements for each merged block, then re-inserts them into the paragraph. 
+        /// This preserves styling for each block while allowing multi-run strings 
+        /// in the same style to be replaced.
+        /// </summary>
         static void ReplaceTextInDocx(string docxPath, List<Replacement> replacements)
         {
-            using WordprocessingDocument doc = WordprocessingDocument.Open(docxPath, true);
+            using var doc = WordprocessingDocument.Open(docxPath, true);
+            var body = doc.MainDocumentPart.Document.Body;
+            if (body == null)
             {
-                string docText = File.ReadAllLines("text.txt");
-                using (StreamWriter sw = new StreamWriter(doc.MainDocumentPart.GetStream(FileMode.Create)))
+                Console.WriteLine("Document has no body.");
+                return;
+            }
+
+            var paragraphs = body.Elements<Paragraph>().ToList();
+
+            foreach (var paragraph in paragraphs)
+            {
+                var runs = paragraph.Elements<Run>().ToList();
+                if (!runs.Any()) continue;
+
+                // We'll build a new list of runs to replace the old ones
+                var newRunsList = new List<Run>();
+
+                // A temporary buffer for merging consecutive same-style runs
+                Run? currentMergedRun = null;
+                string currentMergedText = "";
+
+                // Helper to flush the currentMergedRun+Text to newRunsList
+                void FlushCurrentRun()
                 {
-                    sw.Write(docText);
+                    if (currentMergedRun == null) return; // nothing to flush
+                    // We do the replacements in currentMergedText
+                    foreach (var rep in replacements)
+                    {
+                        if (!string.IsNullOrEmpty(rep.Old) && !string.IsNullOrEmpty(rep.New))
+                        {
+                            if (currentMergedText.Contains(rep.Old))
+                            {
+                                currentMergedText = currentMergedText.Replace(rep.Old, rep.New);
+                            }
+                        }
+                    }
+                    // Set the merged text
+                    var textElem = new Text(currentMergedText);
+                    // Clear existing text elements from the run
+                    currentMergedRun.RemoveAllChildren<Text>();
+                    // Append our new text element
+                    currentMergedRun.Append(textElem);
+
+                    // Add the run to the final list
+                    newRunsList.Add(currentMergedRun);
+                    currentMergedRun = null;
+                    currentMergedText = "";
+                }
+
+                // Compare run styles
+                bool HaveSameStyle(Run r1, Run r2)
+                {
+                    // If both have null or empty RunProperties, treat them as same style
+                    // or compare runProperties XML if needed for a stricter approach
+                    var rp1 = r1.RunProperties?.OuterXml ?? "";
+                    var rp2 = r2.RunProperties?.OuterXml ?? "";
+                    return rp1 == rp2;
+                }
+
+                // Main loop: Merge consecutive runs if style is identical
+                foreach (var run in runs)
+                {
+                    if (currentMergedRun == null)
+                    {
+                        // Start a new merged run buffer
+                        currentMergedRun = (Run)run.CloneNode(true);
+                        // We'll clear the text from the cloned run and store it in currentMergedText
+                        var textParts = currentMergedRun.Elements<Text>().Select(t => t.Text).ToList();
+                        currentMergedText = string.Join("", textParts);
+                        // remove all old text child nodes
+                        currentMergedRun.RemoveAllChildren<Text>();
+                    }
+                    else
+                    {
+                        // Check if style matches
+                        if (HaveSameStyle(currentMergedRun, run))
+                        {
+                            // If same style, we unify text
+                            var textParts = run.Elements<Text>().Select(t => t.Text).ToList();
+                            var combined = string.Join("", textParts);
+                            currentMergedText += combined;
+                        }
+                        else
+                        {
+                            // Different style => flush what we have, then start a new buffer
+                            FlushCurrentRun();
+
+                            currentMergedRun = (Run)run.CloneNode(true);
+                            var textParts = currentMergedRun.Elements<Text>().Select(t => t.Text).ToList();
+                            currentMergedText = string.Join("", textParts);
+                            currentMergedRun.RemoveAllChildren<Text>();
+                        }
+                    }
+                }
+                // End of runs => flush the last buffer
+                FlushCurrentRun();
+
+                // Now we remove all old runs from the paragraph
+                foreach (var r in runs) r.Remove();
+                // And append our newRunsList
+                foreach (var newRun in newRunsList)
+                {
+                    paragraph.Append(newRun);
                 }
             }
-            // var body = doc.MainDocumentPart.Document.Body;
-            // var paraElems = body.Elements<Paragraph>();
 
-            // foreach (var paraElem in paraElems)
-            // {
-            //     foreach (var runElem in paraElem.Elements<Run>())
-            //     {
-            //         // Concatenate all text from the run.
-            //         string allText = string.Empty;
-            //         foreach (var textElem in runElem.Elements<Text>())
-            //         {
-            //             allText += textElem.Text;
-            //             allText.Replace(textElem.Text, "Checks");
-            //             Console.WriteLine("Iteration text: "+textElem.Text);
-            //             textElem.Remove(); // Remove the existing text elements.
-            //         }
-
-            //         Console.WriteLine("Iteration over");
-
-            //         // For each replacement mapping, replace occurrences in the concatenated text.
-            //         foreach (var replacement in replacements)
-            //         {
-            //             if (!string.IsNullOrEmpty(replacement.Old) && allText.Contains(replacement.Old))
-            //             {
-            //                 Console.WriteLine($"Replacing '{replacement.Old}' with '{replacement.New}'");
-            //                 allText = allText.Replace(replacement.Old, replacement.New);
-            //             }
-            //         }
-
-            //         // Append the modified text back as a new Text element.
-            //         var newTextElem = new Text() { Text = allText };
-            //         runElem.Append(newTextElem);
-            //     }
-            // }
-            
             doc.MainDocumentPart.Document.Save();
         }
     }
