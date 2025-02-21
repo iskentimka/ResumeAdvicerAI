@@ -1,34 +1,133 @@
-</content>
-You are provided with a JSON object representing a section of a resume. The JSON object has the following keys:
-- "name": the title of the section (e.g., "Skills", "Project", "Experience")
-- "text": the content of that section
+You are given a JSON array where each object represents a text run extracted from a DOCX file. Each object has the following structure:
+{
+  "text": "<text content>",
+  "paragraph": <paragraph_number>,
+  "run": <run_number>
+}
 
-You are also given a job description. Your task is to slightly modify the "text" field so that it better aligns with the job description. Do not include any extra formatting, explanations, or a JSON structure in your response – simply output the revised text.
+You are also provided with a job description. Your task is to modify the text content of the runs according to the job description's requirements while preserving each run's "paragraph" and "run" values. If a particular run does not need to be modified, output it unchanged. Return your answer as a JSON array of objects in the same format.
 
-Guidelines:
-- For sections like "Skills", "Technologies", "Tools", or "Programming Languages", add or adjust relevant items if needed.
-- For "Experience" or "Project" sections, modify the text (e.g., job responsibilities, project description) slightly so it fits the job requirements. Do not include company names or unrelated details.
-- Output only the revised text as a plain string.
+For example:
 
 Example 1:
 Input:
 {
-    "name": "Project",
-    "text": "The game on Python."
+  "text": "Collaborated in a team to develop a user-centric taxi application, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options",
+  "paragraph": 71,
+  "run": 1
 }
-Job description:
-Need a developer with 3 years Java and Spring experience.
+Job description: need frontend javascript developer
 Output:
-The game was written on Java and Spring.
+{
+  "text": "Collaborated in a team to develop a user-centric taxi application on JavaScript, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options with frontend skills",
+  "paragraph": 71,
+  "run": 1
+}
 
 Example 2:
-Input:
+Input (list of skills):
 {
-    "name": "Skills",
-    "text": "Python, Java"
+  "text": "Java",
+  "paragraph": 25,
+  "run": 1
+},
+{
+  "text": "TypeScript",
+  "paragraph": 26,
+  "run": 1
+},
+{
+  "text": "Python",
+  "paragraph": 27,
+  "run": 1
+},
+{
+  "text": "React Native",
+  "paragraph": 28,
+  "run": 1
 }
-Job description:
-Need a developer with 3 years Java and Spring experience.
+Job description: need frontend javascript developer
+Output (list of skills updated with additional skills):
+{
+  "text": "Java",
+  "paragraph": 25,
+  "run": 1
+},
+{
+  "text": "TypeScript",
+  "paragraph": 26,
+  "run": 1
+},
+{
+  "text": "Python",
+  "paragraph": 27,
+  "run": 1
+},
+{
+  "text": "React Native",
+  "paragraph": 28,
+  "run": 1
+},
+{
+  "text": "JavaScript",
+  "paragraph": 29,
+  "run": 1
+},
+{
+  "text": "HTML",
+  "paragraph": 30,
+  "run": 1
+}
+
+Example 3:
+Input (a sequence of runs in one paragraph):
+{
+  "text": "Contributed ",
+  "paragraph": 50,
+  "run": 1
+},
+{
+  "text": "in",
+  "paragraph": 50,
+  "run": 2
+},
+{
+  "text": " the development of a social media mobile application for musicians, ",
+  "paragraph": 50,
+  "run": 3
+},
+{
+  "text": "using",
+  "paragraph": 50,
+  "run": 4
+},
+{
+  "text": " React Native",
+  "paragraph": 50,
+  "run": 5
+},
+{
+  "text": " and",
+  "paragraph": 50,
+  "run": 6
+},
+{
+  "text": " TypeScript",
+  "paragraph": 50,
+  "run": 7
+},
+{
+  "text": " ",
+  "paragraph": 50,
+  "run": 8
+},
+{
+  "text": "for frontend and backend integration. ",
+  "paragraph": 50,
+  "run": 9
+}
+Job description: need frontend javascript developer
 Output:
-Python, Java, and Spring.
-</>
+(If no modification is needed for these runs, then they remain unchanged.)
+
+Please generate the new JSON array with updated text based on the job description while preserving the "paragraph" and "run" numbers for each element.

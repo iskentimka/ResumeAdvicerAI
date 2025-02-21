@@ -138,43 +138,58 @@ class ResumeFormatter:
 
     def get_generated_new_text(self, extracted_data, job_description: str):
         """
-        Uses OpenAI to generate a new description based on the extracted
-        resume section and the job description. Expects a prompt template in 'generatePrompt.txt'.
+        Uses OpenAI to generate new text for the entire extracted JSON data based on the job description.
+        The prompt instructs the model to update the JSON array such that for each JSON object:
+        - The "text" field is modified according to the job description.
+        - The "paragraph" and "run" fields remain unchanged.
+        The model is explicitly instructed to return only the JSON array, without any additional commentary.
         
-        For each extracted part, if a "description" exists, it is used; otherwise the "text" field is used.
-        
-        Returns a dictionary mapping an index to an object with:
-        - "section": the section name (e.g., "experience", "skills")
-        - "extracted": the original extracted text for that section
-        - "generated": the revised text returned by the API.
+        Returns:
+            A list of dictionaries, each with keys "text", "paragraph", and "run" (with updated text).
         """
+        import json
+
+        # Read the prompt template from file.
         try:
             with open("generatePrompt.txt", "r", encoding="utf-8") as file:
                 prompt_generate = file.read()
         except Exception as e:
             raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
+
+        # Convert the entire extracted data to a JSON string.
+        extracted_data_json = json.dumps(extracted_data, indent=2)
         
-        result_map = {}
-        for i, part in enumerate(extracted_data):
-            # Use "description" if available; otherwise, fallback to "text".
-            content = part.get("description") or part.get("text") or ""
-            # Build the prompt.
-            prompt = prompt_generate + f"</job_description>{job_description}</>\n</resume_part>{content}</>"
-            response = self.openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}]
-            )
-            generated_text = response.choices[0].message.content.strip()
-            result_map[i] = {
-                "section": part["section"],
-                "extracted": content,
-                "generated": generated_text
-            }
+        # Build a single prompt that includes the job description and the whole extracted JSON.
+        # Note the final instruction "Return only the JSON array" to force a pure JSON output.
+        prompt = (
+            prompt_generate +
+            "\n\nJob Description:\n" + job_description +
+            "\n\nExtracted JSON Data:\n" + extracted_data_json +
+            "\n\nPlease update the JSON data as follows: For each JSON object, if modifications are needed based on the job description, update the 'text' field accordingly, while keeping the 'paragraph' and 'run' fields unchanged. Return ONLY the JSON array (without any extra commentary or markdown formatting)."
+        )
+        
+        response = self.openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        generated_response = response.choices[0].message.content.strip()
+        
+        if not generated_response:
+            raise Exception("The generated response is empty. Check the prompt and API call.")
+        
+        # For safety, if the response is wrapped in code fences, extract the inner content.
+        if generated_response.startswith("```json") and generated_response.endswith("```"):
+            generated_response = generated_response[len("```json"): -3].strip()
+
+        try:
+            generated_data = json.loads(generated_response)
+        except Exception as e:
+            raise Exception(f"Failed to parse generated JSON: {str(e)}\nResponse was: {generated_response}")
         
         with open("generated_data.json", "w", encoding="utf-8") as json_file:
-            json.dump(result_map, json_file, indent=4)
+            json.dump(generated_data, json_file, indent=4)
         
-        return result_map
+        return generated_data
 
     # --- LaTeX Modification ---
     def replace_text_latex(self, tex_path: str, modified_data, extracted_data) -> str:
@@ -262,8 +277,9 @@ if __name__ == "__main__":
     
     # ---------------- DOCX Example ----------------
     #save_docx_xml("resume_test.docx", "output.xml")
-    formatter.extract_docx_runs_to_json("resume_test.docx", "resume_text_with_runs")
-    
+    json_output_path = "resume_text_with_runs.json"
+    formatter.extract_docx_runs_to_json("resume_test.docx", json_output_path)
+    formatter.get_generated_new_text(json_output_path,job_description)
     
 
     
