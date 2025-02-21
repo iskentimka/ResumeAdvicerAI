@@ -1,0 +1,7 @@
+You are given a string from the text resume. 
+Your task is to choose right section for this string.
+You are given the text of resume, existing lists of strings and the following sections:
+"SKILLS"
+"PROJECTS"
+"EXPERIENCE"
+"OTHERS"

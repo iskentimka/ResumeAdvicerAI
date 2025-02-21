@@ -1,133 +1,21 @@
-You are given a JSON array where each object represents a text run extracted from a DOCX file. Each object has the following structure:
-{
-  "text": "<text content>",
-  "paragraph": <paragraph_number>,
-  "run": <run_number>
-}
+You are given a list of text lines extracted from a resume. Each line represents a separate string from the original document. Your task is to **return the same list but with additional lines** where necessary, according to the provided job description.
 
-You are also provided with a job description. Your task is to modify the text content of the runs according to the job description's requirements while preserving each run's "paragraph" and "run" values. If a particular run does not need to be modified, output it unchanged. Return your answer as a JSON array of objects in the same format.
+###Rules:
+1. DO NOT REMOVE ANY LINES FROM THE GIVEN TEXT EVEN EMPTY LINE OR SPACE.
+2. DO NOT CORRECT THE MISTAKES.
+3. Do NOT add a new jobs experiences,BUT you CAN just modify existing lines BUT by minimum edits.
+4. DO NOT add a new PROJECTS,BUT you CAN just modify existing lines,BUT by minimum edits.
+5. You can modify existing lines and add new relevant lines where required.
+6. For technical skills add just names of needed technologies.
+7. The new lines should contain only **important skills or experience related to the job description.
+8. Keep the structure the same (each line remains a separate string).
+9. Return only the modified list in a valid JSON array format.
 
-For example:
 
-Example 1:
-Input:
-{
-  "text": "Collaborated in a team to develop a user-centric taxi application, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options",
-  "paragraph": 71,
-  "run": 1
-}
-Job description: need frontend javascript developer
-Output:
-{
-  "text": "Collaborated in a team to develop a user-centric taxi application on JavaScript, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options with frontend skills",
-  "paragraph": 71,
-  "run": 1
-}
+###Your Task:
+Now, update the following resume text based on this job description:  
+Job Description: {job_description}  
+Old Resume:  
+{resume_lines}  
 
-Example 2:
-Input (list of skills):
-{
-  "text": "Java",
-  "paragraph": 25,
-  "run": 1
-},
-{
-  "text": "TypeScript",
-  "paragraph": 26,
-  "run": 1
-},
-{
-  "text": "Python",
-  "paragraph": 27,
-  "run": 1
-},
-{
-  "text": "React Native",
-  "paragraph": 28,
-  "run": 1
-}
-Job description: need frontend javascript developer
-Output (list of skills updated with additional skills):
-{
-  "text": "Java",
-  "paragraph": 25,
-  "run": 1
-},
-{
-  "text": "TypeScript",
-  "paragraph": 26,
-  "run": 1
-},
-{
-  "text": "Python",
-  "paragraph": 27,
-  "run": 1
-},
-{
-  "text": "React Native",
-  "paragraph": 28,
-  "run": 1
-},
-{
-  "text": "JavaScript",
-  "paragraph": 29,
-  "run": 1
-},
-{
-  "text": "HTML",
-  "paragraph": 30,
-  "run": 1
-}
-
-Example 3:
-Input (a sequence of runs in one paragraph):
-{
-  "text": "Contributed ",
-  "paragraph": 50,
-  "run": 1
-},
-{
-  "text": "in",
-  "paragraph": 50,
-  "run": 2
-},
-{
-  "text": " the development of a social media mobile application for musicians, ",
-  "paragraph": 50,
-  "run": 3
-},
-{
-  "text": "using",
-  "paragraph": 50,
-  "run": 4
-},
-{
-  "text": " React Native",
-  "paragraph": 50,
-  "run": 5
-},
-{
-  "text": " and",
-  "paragraph": 50,
-  "run": 6
-},
-{
-  "text": " TypeScript",
-  "paragraph": 50,
-  "run": 7
-},
-{
-  "text": " ",
-  "paragraph": 50,
-  "run": 8
-},
-{
-  "text": "for frontend and backend integration. ",
-  "paragraph": 50,
-  "run": 9
-}
-Job description: need frontend javascript developer
-Output:
-(If no modification is needed for these runs, then they remain unchanged.)
-
-Please generate the new JSON array with updated text based on the job description while preserving the "paragraph" and "run" numbers for each element.
+**Return the full list with the newly added lines as a valid JSON array of strings, preserving the original order.**

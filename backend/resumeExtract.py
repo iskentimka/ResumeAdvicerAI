@@ -13,6 +13,7 @@ from pylatexenc.latex2text import LatexNodes2Text
 from openai import OpenAI  # Ensure you have the proper OpenAI client installed
 import subprocess
 import zipfile
+import re
 
 def save_docx_xml(docx_path, output_xml_path):
     """Extracts XML from a DOCX file and saves it to a .xml file."""
@@ -43,6 +44,12 @@ def extract_json_from_response(response_content: str) -> str:
         json_str = response_content.strip()
     return json_str
 
+
+def is_any_letters(string: str) -> bool:
+    """Checks if the string contains at least one letter (A-Z, a-z), '!' or '.'"""
+    return bool(re.search(r"[a-zA-Z!.]", string))
+
+
 # ------------------------------------------------------------------------------
 # Single Class Combining All Functionality
 # ------------------------------------------------------------------------------
@@ -50,28 +57,6 @@ class ResumeFormatter:
     def __init__(self, api_key: str):
         self.api_key = api_key
         self.openai_client = OpenAI(api_key=api_key)
-
-    # --- Extraction Methods ---
-    def extract_from_pdf(self, pdf_path: str):
-        """Extract text from a PDF file along with text positions."""
-        text = ""
-        text_positions = []
-        with pdfplumber.open(pdf_path) as pdf:
-            for page_num, page in enumerate(pdf.pages):
-                page_text = page.extract_text()
-                if page_text:
-                    text += page_text + "\n"
-                words = page.extract_words()
-                for word in words:
-                    x0, y0, x1, y1, frag_text = word['x0'], word['top'], word['x1'], word['bottom'], word['text']
-                    text_positions.append((page_num, x0, y0, x1, y1, frag_text))
-        return (text.strip(), text_positions)
-
-    def extract_from_docx(self, docx_path: str) -> str:
-        """Extract text from a DOCX file."""
-        doc = docx.Document(docx_path)
-        text = "\n".join([p.text for p in doc.paragraphs])
-        return text
 
     def extract_from_latex(self, tex_path: str) -> str:
         """Extract and clean text from a LaTeX file."""
@@ -85,58 +70,12 @@ class ResumeFormatter:
 
     def extract(self, file_path: str) -> str:
         """Determine file type and extract text accordingly."""
-        if file_path.endswith(".pdf"):
-            extracted, _ = self.extract_from_pdf(file_path)
-            return extracted
-        elif file_path.endswith(".docx"):
-            return self.extract_from_docx(file_path)
-        elif file_path.endswith(".tex"):
+        if file_path.endswith(".tex"):
             return self.extract_from_latex(file_path)
         else:
             raise ValueError("Unsupported file format")
 
-    # --- AI Methods ---
-    def extract_editable_parts(self, text: str):
-        """
-        Uses OpenAI to extract editable parts from the text.
-        Expects a prompt template in 'promptExtract.txt'.
-        """
-        try:
-            with open("promptExtract.txt", "r", encoding="utf-8") as file:
-                prompt = file.read()
-        except Exception as e:
-            raise Exception(f"Could not read promptExtract.txt: {str(e)}")
-        prompt += f"</input_text_resume>{text}</>"
-
-        response = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        # Get the raw content from the message and strip any whitespace.
-        raw_content = response.choices[0].message.content.strip()
-        print("DEBUG: Raw response content:", raw_content)
-        
-        # If the raw content is empty, raise an error.
-        if not raw_content:
-            raise Exception("Received empty response from OpenAI API. Check your prompt, API key, or usage limits.")
-        
-        # Use the helper function to remove markdown fences (if any)
-        json_str = extract_json_from_response(raw_content)
-        print("DEBUG: Cleaned JSON content:", json_str)
-        
-        if not json_str:
-            raise Exception("After cleaning, the response content is empty.")
-        
-        try:
-            json_data = json.loads(json_str)
-        except Exception as e:
-            raise Exception(f"Error parsing JSON: {e}. Raw JSON string: {json_str}")
-        
-        with open("extracted_data.json", "w", encoding="utf-8") as json_file:
-            json.dump(json_data, json_file, indent=4)
-        return json_data
-
-    def get_generated_new_text(self, extracted_data, job_description: str):
+    def get_generated_new_text(self, extracted_data_path, job_description: str):
         """
         Uses OpenAI to generate new text for the entire extracted JSON data based on the job description.
         The prompt instructs the model to update the JSON array such that for each JSON object:
@@ -156,24 +95,25 @@ class ResumeFormatter:
         except Exception as e:
             raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
 
-        # Convert the entire extracted data to a JSON string.
-        extracted_data_json = json.dumps(extracted_data, indent=2)
-        
+        # Read the prompt template from file.
+        try:
+            with open(extracted_data_path, "r", encoding="utf-8") as file:
+                extracted_data_text = file.read()
+        except Exception as e:
+            raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
         # Build a single prompt that includes the job description and the whole extracted JSON.
         # Note the final instruction "Return only the JSON array" to force a pure JSON output.
         prompt = (
             prompt_generate +
             "\n\nJob Description:\n" + job_description +
-            "\n\nExtracted JSON Data:\n" + extracted_data_json +
-            "\n\nPlease update the JSON data as follows: For each JSON object, if modifications are needed based on the job description, update the 'text' field accordingly, while keeping the 'paragraph' and 'run' fields unchanged. Return ONLY the JSON array (without any extra commentary or markdown formatting)."
+            "\n\nExtracted text file:\n" + extracted_data_text
         )
         
         response = self.openai_client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
-        generated_response = response.choices[0].message.content.strip()
-        
+        generated_response = response.choices[0].message.content.strip()    
         if not generated_response:
             raise Exception("The generated response is empty. Check the prompt and API call.")
         
@@ -190,6 +130,64 @@ class ResumeFormatter:
             json.dump(generated_data, json_file, indent=4)
         
         return generated_data
+
+    def gelegate_resume_text(self, extracted_data_text_path : str, extract_data_json_path : str,)-> None:
+        # Read the text from resume file.
+        try:
+            with open(extracted_data_text_path, "r", encoding="utf-8") as file:
+                text = file.read()
+        except Exception as e:
+            raise Exception(f"Could not read extracted_data_text_path file: {str(e)}")
+        
+        # Read the delegate prompt from file.
+        try:
+            with open("delegate_prompt.txt", "r", encoding="utf-8") as file:
+                prompt_base = file.read()
+        except Exception as e:
+            raise Exception(f"Could not read prompt file: {str(e)}")
+        
+        # Read the JSON with strings from file.
+        try:
+            with open(extract_data_json_path, "r", encoding="utf-8") as file:
+                json_content = file.read()
+        except Exception as e:
+            raise Exception(f"Could not read prompt file: {str(e)}")
+
+        extract_data = json.loads(json_content)
+
+        skills = []
+        projects = []
+        experiences = []
+        others = []
+        
+        for str in extract_data:
+            if str['text'] == " " or str['text'] == "" or str['text'] == '\n' or is_any_letters(str['text']) == False: continue
+            prompt = ( prompt_base + 
+                "\n\ Text of resume:\n" + text + "\n"
+                "SKILLS: " + ", ".join(item for item in skills) + "\n" +
+                "PROJECTS: " + ", ".join(item for item in projects) + "\n" +
+                "EXPERIENCE: " + ", ".join(item for item in experiences) + "\n" +
+                "OTHER: " + ", ".join(item for item in others) +
+                "Given string: " + str['text'] + "\n" + 
+                "Return only one word of SKILLS, PROJECTS, EXPERIENCE or OTHER\n"
+            )
+        
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            generated_response = response.choices[0].message.content.strip()
+
+            if (generated_response == "SKILLS"): skills.append(str['text'])
+            if (generated_response == "PROJECTS"): projects.append(str['text'])
+            if (generated_response == "EXPERIENCE"): experiences.append(str['text'])
+            if (generated_response == "OTHER"): others.append(str['text'])
+        
+        print(f"skills: {skills}")
+        print(f"projects: {projects}")
+        print(f"exps: {experiences}")
+        print(f"others: {others}")
+
 
     # --- LaTeX Modification ---
     def replace_text_latex(self, tex_path: str, modified_data, extracted_data) -> str:
@@ -237,7 +235,7 @@ class ResumeFormatter:
     
 
     
-    def extract_docx_runs_to_json(self, docx_path: str, output_json_path: str) -> None:
+    def extract_text_to_json(self, docx_path: str, output_json_path: str, output_txt_path: str ) -> None:
         """
         Extracts text from each run in a DOCX file and saves the result to a JSON file.
         
@@ -253,9 +251,11 @@ class ResumeFormatter:
         """
         document = docx.Document(docx_path)
         data = []
+        text = []
         
         for p_idx, paragraph in enumerate(document.paragraphs, start=1):
             for r_idx, run in enumerate(paragraph.runs, start=1):
+                text.append(run.text)
                 data.append({
                     "text": run.text,
                     "paragraph": p_idx,
@@ -264,6 +264,10 @@ class ResumeFormatter:
         
         with open(output_json_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        # Save the extracted text into a TXT file
+        with open(output_txt_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(text)) 
+        
 
 
 
@@ -278,9 +282,10 @@ if __name__ == "__main__":
     # ---------------- DOCX Example ----------------
     #save_docx_xml("resume_test.docx", "output.xml")
     json_output_path = "resume_text_with_runs.json"
-    formatter.extract_docx_runs_to_json("resume_test.docx", json_output_path)
-    formatter.get_generated_new_text(json_output_path,job_description)
-    
+    txt_output_path = "text_resume.txt"
+    resume_path = "resume_test.docx"
+    formatter.extract_text_to_json(resume_path, json_output_path, txt_output_path)
+    formatter.gelegate_resume_text(txt_output_path,json_output_path)
 
     
     
