@@ -1,0 +1,882 @@
+[
+  {
+    "text": "",
+    "paragraph": 1,
+    "run": 1
+  },
+  {
+    "text": "Rinat Yakubov",
+    "paragraph": 3,
+    "run": 1
+  },
+  {
+    "text": "Software Engineer ",
+    "paragraph": 4,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 6,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 6,
+    "run": 2
+  },
+  {
+    "text": "rntkbv@gmail.com",
+    "paragraph": 6,
+    "run": 3
+  },
+  {
+    "text": "",
+    "paragraph": 7,
+    "run": 1
+  },
+  {
+    "text": "+447423016841",
+    "paragraph": 7,
+    "run": 2
+  },
+  {
+    "text": "",
+    "paragraph": 7,
+    "run": 3
+  },
+  {
+    "text": "EDUCATION",
+    "paragraph": 9,
+    "run": 1
+  },
+  {
+    "text": "University of St Andrews",
+    "paragraph": 10,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 11,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 11,
+    "run": 2
+  },
+  {
+    "text": "B",
+    "paragraph": 11,
+    "run": 3
+  },
+  {
+    "text": "Sc Hons Computer Science",
+    "paragraph": 11,
+    "run": 4
+  },
+  {
+    "text": "September ",
+    "paragraph": 12,
+    "run": 1
+  },
+  {
+    "text": "2022 ",
+    "paragraph": 12,
+    "run": 2
+  },
+  {
+    "text": "\u2013",
+    "paragraph": 12,
+    "run": 3
+  },
+  {
+    "text": " current",
+    "paragraph": 12,
+    "run": 4
+  },
+  {
+    "text": "      ",
+    "paragraph": 13,
+    "run": 1
+  },
+  {
+    "text": "St Andrews, UK",
+    "paragraph": 13,
+    "run": 2
+  },
+  {
+    "text": "Degree Classification: ",
+    "paragraph": 14,
+    "run": 1
+  },
+  {
+    "text": "First",
+    "paragraph": 14,
+    "run": 2
+  },
+  {
+    "text": "St George\u2019s British",
+    "paragraph": 15,
+    "run": 1
+  },
+  {
+    "text": "International School",
+    "paragraph": 16,
+    "run": 1
+  },
+  {
+    "text": "IB Diploma",
+    "paragraph": 17,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 18,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 18,
+    "run": 2
+  },
+  {
+    "text": "",
+    "paragraph": 18,
+    "run": 3
+  },
+  {
+    "text": "",
+    "paragraph": 20,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 20,
+    "run": 2
+  },
+  {
+    "text": "",
+    "paragraph": 20,
+    "run": 3
+  },
+  {
+    "text": "",
+    "paragraph": 21,
+    "run": 1
+  },
+  {
+    "text": "SKILLS",
+    "paragraph": 24,
+    "run": 1
+  },
+  {
+    "text": "Java",
+    "paragraph": 25,
+    "run": 1
+  },
+  {
+    "text": "TypeScript",
+    "paragraph": 26,
+    "run": 1
+  },
+  {
+    "text": "Python",
+    "paragraph": 27,
+    "run": 1
+  },
+  {
+    "text": "React Native",
+    "paragraph": 28,
+    "run": 1
+  },
+  {
+    "text": "Spring Boot",
+    "paragraph": 29,
+    "run": 1
+  },
+  {
+    "text": "Express.js / Node.js",
+    "paragraph": 30,
+    "run": 1
+  },
+  {
+    "text": "MySQL",
+    "paragraph": 31,
+    "run": 1
+  },
+  {
+    "text": "Git & GitHub / GitLab",
+    "paragraph": 32,
+    "run": 1
+  },
+  {
+    "text": "Agile & Scrum",
+    "paragraph": 33,
+    "run": 1
+  },
+  {
+    "text": "RESTful API",
+    "paragraph": 34,
+    "run": 1
+  },
+  {
+    "text": "Interests",
+    "paragraph": 36,
+    "run": 1
+  },
+  {
+    "text": "Chess, gym, martial arts, tennis, drums, ",
+    "paragraph": 37,
+    "run": 1
+  },
+  {
+    "text": "snow sports",
+    "paragraph": 37,
+    "run": 2
+  },
+  {
+    "text": "Languages",
+    "paragraph": 39,
+    "run": 1
+  },
+  {
+    "text": "Russian (native),",
+    "paragraph": 40,
+    "run": 1
+  },
+  {
+    "text": " Kyrgyz (native),",
+    "paragraph": 40,
+    "run": 2
+  },
+  {
+    "text": " English (",
+    "paragraph": 40,
+    "run": 3
+  },
+  {
+    "text": "proficient",
+    "paragraph": 40,
+    "run": 4
+  },
+  {
+    "text": "), Italian (beginner)",
+    "paragraph": 40,
+    "run": 5
+  },
+  {
+    "text": "",
+    "paragraph": 41,
+    "run": 1
+  },
+  {
+    "text": "WORK",
+    "paragraph": 41,
+    "run": 2
+  },
+  {
+    "text": " ",
+    "paragraph": 41,
+    "run": 3
+  },
+  {
+    "text": "EXPERIENCE",
+    "paragraph": 41,
+    "run": 4
+  },
+  {
+    "text": "Kyrgyz Embassy to Italy",
+    "paragraph": 42,
+    "run": 1
+  },
+  {
+    "text": "Special Assistant to the Ambassador",
+    "paragraph": 43,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 44,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 44,
+    "run": 2
+  },
+  {
+    "text": "    ",
+    "paragraph": 44,
+    "run": 3
+  },
+  {
+    "text": "May",
+    "paragraph": 44,
+    "run": 4
+  },
+  {
+    "text": " ",
+    "paragraph": 44,
+    "run": 5
+  },
+  {
+    "text": "202",
+    "paragraph": 44,
+    "run": 6
+  },
+  {
+    "text": "4",
+    "paragraph": 44,
+    "run": 7
+  },
+  {
+    "text": " ",
+    "paragraph": 44,
+    "run": 8
+  },
+  {
+    "text": "\u2013",
+    "paragraph": 44,
+    "run": 9
+  },
+  {
+    "text": " ",
+    "paragraph": 44,
+    "run": 10
+  },
+  {
+    "text": "August 2024",
+    "paragraph": 44,
+    "run": 11
+  },
+  {
+    "text": "P",
+    "paragraph": 45,
+    "run": 1
+  },
+  {
+    "text": "articipated in diplomatic meetings and events ",
+    "paragraph": 45,
+    "run": 2
+  },
+  {
+    "text": "on behalf of",
+    "paragraph": 45,
+    "run": 3
+  },
+  {
+    "text": " the embassy, including engaging with the Director-General of ",
+    "paragraph": 45,
+    "run": 4
+  },
+  {
+    "text": "FAO, visiting MOFA of Italy,",
+    "paragraph": 45,
+    "run": 5
+  },
+  {
+    "text": " and ",
+    "paragraph": 45,
+    "run": 6
+  },
+  {
+    "text": "representing the country at",
+    "paragraph": 45,
+    "run": 7
+  },
+  {
+    "text": " the COFO27",
+    "paragraph": 45,
+    "run": 8
+  },
+  {
+    "text": " ",
+    "paragraph": 45,
+    "run": 9
+  },
+  {
+    "text": "hosted by FAO",
+    "paragraph": 45,
+    "run": 10
+  },
+  {
+    "text": ". ",
+    "paragraph": 45,
+    "run": 11
+  },
+  {
+    "text": "Authored informative papers on the current diplomatic relations and activities related to Kyrgyzstan and Italy.",
+    "paragraph": 46,
+    "run": 1
+  },
+  {
+    "text": "Klank",
+    "paragraph": 47,
+    "run": 1
+  },
+  {
+    "text": "Full",
+    "paragraph": 48,
+    "run": 1
+  },
+  {
+    "text": "-",
+    "paragraph": 48,
+    "run": 2
+  },
+  {
+    "text": "Stack ",
+    "paragraph": 48,
+    "run": 3
+  },
+  {
+    "text": "Mobile",
+    "paragraph": 48,
+    "run": 4
+  },
+  {
+    "text": " Developer",
+    "paragraph": 48,
+    "run": 5
+  },
+  {
+    "text": "",
+    "paragraph": 49,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 49,
+    "run": 2
+  },
+  {
+    "text": "    ",
+    "paragraph": 49,
+    "run": 3
+  },
+  {
+    "text": "February",
+    "paragraph": 49,
+    "run": 4
+  },
+  {
+    "text": " ",
+    "paragraph": 49,
+    "run": 5
+  },
+  {
+    "text": "202",
+    "paragraph": 49,
+    "run": 6
+  },
+  {
+    "text": "4",
+    "paragraph": 49,
+    "run": 7
+  },
+  {
+    "text": " ",
+    "paragraph": 49,
+    "run": 8
+  },
+  {
+    "text": "\u2013",
+    "paragraph": 49,
+    "run": 9
+  },
+  {
+    "text": " ",
+    "paragraph": 49,
+    "run": 10
+  },
+  {
+    "text": "November 2024",
+    "paragraph": 49,
+    "run": 11
+  },
+  {
+    "text": "Contributed ",
+    "paragraph": 50,
+    "run": 1
+  },
+  {
+    "text": "in",
+    "paragraph": 50,
+    "run": 2
+  },
+  {
+    "text": " the development of a social media mobile application for musicians, ",
+    "paragraph": 50,
+    "run": 3
+  },
+  {
+    "text": "using",
+    "paragraph": 50,
+    "run": 4
+  },
+  {
+    "text": " React Native",
+    "paragraph": 50,
+    "run": 5
+  },
+  {
+    "text": " and",
+    "paragraph": 50,
+    "run": 6
+  },
+  {
+    "text": " TypeScript",
+    "paragraph": 50,
+    "run": 7
+  },
+  {
+    "text": " ",
+    "paragraph": 50,
+    "run": 8
+  },
+  {
+    "text": "for frontend and backend integration. ",
+    "paragraph": 50,
+    "run": 9
+  },
+  {
+    "text": "Collaborated closely cross-functional teams to design, develop, and optimize mobile app features, ensuring high-quality performance",
+    "paragraph": 51,
+    "run": 1
+  },
+  {
+    "text": "Implemented robust coding practices to build scalable, maintainable, and efficient software solutions.",
+    "paragraph": 52,
+    "run": 1
+  },
+  {
+    "text": "Retail Business Owner",
+    "paragraph": 53,
+    "run": 1
+  },
+  {
+    "text": "",
+    "paragraph": 54,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 54,
+    "run": 2
+  },
+  {
+    "text": "    ",
+    "paragraph": 54,
+    "run": 3
+  },
+  {
+    "text": "February",
+    "paragraph": 54,
+    "run": 4
+  },
+  {
+    "text": " ",
+    "paragraph": 54,
+    "run": 5
+  },
+  {
+    "text": "2023",
+    "paragraph": 54,
+    "run": 6
+  },
+  {
+    "text": " ",
+    "paragraph": 54,
+    "run": 7
+  },
+  {
+    "text": "\u2013",
+    "paragraph": 54,
+    "run": 8
+  },
+  {
+    "text": " ",
+    "paragraph": 54,
+    "run": 9
+  },
+  {
+    "text": "August 2023",
+    "paragraph": 54,
+    "run": 10
+  },
+  {
+    "text": "\t",
+    "paragraph": 54,
+    "run": 11
+  },
+  {
+    "text": "Founded",
+    "paragraph": 55,
+    "run": 1
+  },
+  {
+    "text": " and operated an online retail platform specializing in LED home d\u00e9cor lamps. ",
+    "paragraph": 55,
+    "run": 2
+  },
+  {
+    "text": "Single-handedly managed all facets of the business including finance, ",
+    "paragraph": 56,
+    "run": 1
+  },
+  {
+    "text": "web design",
+    "paragraph": 56,
+    "run": 2
+  },
+  {
+    "text": ", product sourcing, logistics",
+    "paragraph": 56,
+    "run": 3
+  },
+  {
+    "text": ",",
+    "paragraph": 56,
+    "run": 4
+  },
+  {
+    "text": " and marketing.",
+    "paragraph": 56,
+    "run": 5
+  },
+  {
+    "text": "Developed and executed digital marketing strategies, including SEO optimization, to drive traffic and increase brand visibility. ",
+    "paragraph": 57,
+    "run": 1
+  },
+  {
+    "text": "Utilized eCommerce platforms and tools to streamline order processing and customer management. ",
+    "paragraph": 58,
+    "run": 1
+  },
+  {
+    "text": "Game Manager",
+    "paragraph": 59,
+    "run": 1
+  },
+  {
+    "text": "RedBull",
+    "paragraph": 60,
+    "run": 1
+  },
+  {
+    "text": " Flick",
+    "paragraph": 60,
+    "run": 2
+  },
+  {
+    "text": "",
+    "paragraph": 61,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 61,
+    "run": 2
+  },
+  {
+    "text": "    ",
+    "paragraph": 61,
+    "run": 3
+  },
+  {
+    "text": "June",
+    "paragraph": 61,
+    "run": 4
+  },
+  {
+    "text": " ",
+    "paragraph": 61,
+    "run": 5
+  },
+  {
+    "text": "2020",
+    "paragraph": 61,
+    "run": 6
+  },
+  {
+    "text": " ",
+    "paragraph": 61,
+    "run": 7
+  },
+  {
+    "text": "\u2013",
+    "paragraph": 61,
+    "run": 8
+  },
+  {
+    "text": " ",
+    "paragraph": 61,
+    "run": 9
+  },
+  {
+    "text": "August 2020",
+    "paragraph": 61,
+    "run": 10
+  },
+  {
+    "text": "Navigated the gamers on the gaming platform, ",
+    "paragraph": 62,
+    "run": 1
+  },
+  {
+    "text": "and ",
+    "paragraph": 62,
+    "run": 2
+  },
+  {
+    "text": "the rules of the game. ",
+    "paragraph": 62,
+    "run": 3
+  },
+  {
+    "text": "Monitored the gaming matches of various teams to make sure there ",
+    "paragraph": 63,
+    "run": 1
+  },
+  {
+    "text": "were",
+    "paragraph": 63,
+    "run": 2
+  },
+  {
+    "text": " ",
+    "paragraph": 63,
+    "run": 3
+  },
+  {
+    "text": "no",
+    "paragraph": 63,
+    "run": 4
+  },
+  {
+    "text": " rules violations.",
+    "paragraph": 63,
+    "run": 5
+  },
+  {
+    "text": "Provided technical support all the time as well as training for junior administrators.",
+    "paragraph": 64,
+    "run": 1
+  },
+  {
+    "text": "PROJECTS",
+    "paragraph": 65,
+    "run": 1
+  },
+  {
+    "text": "E-commerce Supplement Store",
+    "paragraph": 66,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 66,
+    "run": 2
+  },
+  {
+    "text": "- ",
+    "paragraph": 66,
+    "run": 3
+  },
+  {
+    "text": "TypeScript",
+    "paragraph": 66,
+    "run": 4
+  },
+  {
+    "text": "D",
+    "paragraph": 67,
+    "run": 1
+  },
+  {
+    "text": "esigned and developed a full-stack e-commerce website for selling supplements, utilizing React, Vite, and Tailwind CSS for the frontend and backend. Integrated Airtable API as a lightweight database solution to manage product listings and inventory efficiently. ",
+    "paragraph": 67,
+    "run": 2
+  },
+  {
+    "text": "Restaurant Billing System",
+    "paragraph": 68,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 68,
+    "run": 2
+  },
+  {
+    "text": "- Java",
+    "paragraph": 68,
+    "run": 3
+  },
+  {
+    "text": "Using Java, I created a system ",
+    "paragraph": 69,
+    "run": 1
+  },
+  {
+    "text": "that",
+    "paragraph": 69,
+    "run": 2
+  },
+  {
+    "text": " calculates the bill at a restaurant. The user (waiter or admin) ",
+    "paragraph": 69,
+    "run": 3
+  },
+  {
+    "text": "can",
+    "paragraph": 69,
+    "run": 4
+  },
+  {
+    "text": " navigate through the system, select/remove items from tables, and proceed to checkout. ",
+    "paragraph": 69,
+    "run": 5
+  },
+  {
+    "text": "Taxi Application",
+    "paragraph": 70,
+    "run": 1
+  },
+  {
+    "text": " ",
+    "paragraph": 70,
+    "run": 2
+  },
+  {
+    "text": "- Flutter",
+    "paragraph": 70,
+    "run": 3
+  },
+  {
+    "text": "Collaborated in a team to develop a user-centric taxi application, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options",
+    "paragraph": 71,
+    "run": 1
+  },
+  {
+    "text": "CERTIFICATIONS",
+    "paragraph": 72,
+    "run": 1
+  },
+  {
+    "text": "Google Crash Course on Python ",
+    "paragraph": 73,
+    "run": 1
+  },
+  {
+    "text": "Google Foundations of Cybersecurity ",
+    "paragraph": 74,
+    "run": 1
+  },
+  {
+    "text": "MIT Introduction to Computer Science and Programming Using Python",
+    "paragraph": 75,
+    "run": 1
+  }
+]

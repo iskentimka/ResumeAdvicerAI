@@ -9,7 +9,6 @@ import json
 import pdfplumber
 import docx
 import re
-import fitz
 from pylatexenc.latex2text import LatexNodes2Text
 from openai import OpenAI  # Ensure you have the proper OpenAI client installed
 import subprocess
@@ -220,6 +219,36 @@ class ResumeFormatter:
         command = ["./bin/Release/net8.0/osx-x64/publish/DocxTextReplacer", input_docx, json_mapping, output_docx]
         subprocess.run(command, check=True)
         return output_docx
+    
+
+    
+    def extract_docx_runs_to_json(self, docx_path: str, output_json_path: str) -> None:
+        """
+        Extracts text from each run in a DOCX file and saves the result to a JSON file.
+        
+        Each run is represented as a dictionary in the following format:
+        {
+            "text": "example",
+            "paragraph": 1,
+            "run": 1
+        }
+        
+        :param docx_path: Path to the DOCX file.
+        :param output_json_path: Path where the JSON file should be saved.
+        """
+        document = docx.Document(docx_path)
+        data = []
+        
+        for p_idx, paragraph in enumerate(document.paragraphs, start=1):
+            for r_idx, run in enumerate(paragraph.runs, start=1):
+                data.append({
+                    "text": run.text,
+                    "paragraph": p_idx,
+                    "run": r_idx
+                })
+        
+        with open(output_json_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
 
 
 
@@ -232,9 +261,11 @@ if __name__ == "__main__":
         job_description = file.read()
     
     # ---------------- DOCX Example ----------------
-    text_from_doc = formatter.extract("resume_test.docx")
-    print(f"Extracted text from docx: {text_from_doc}\n")
-    save_docx_xml("resume_test.docx", "output.xml")
+    #save_docx_xml("resume_test.docx", "output.xml")
+    formatter.extract_docx_runs_to_json("resume_test.docx", "resume_text_with_runs")
+    
+    
+
     
     
     # extracted_data = formatter.extract_editable_parts(text_from_doc)
