@@ -1,21 +1,41 @@
-You are given a list of text lines extracted from a resume. Each line represents a separate string from the original document. Your task is to **return the same list but with additional lines** where necessary, according to the provided job description.
+You are given a list of text lines extracted from a resume. Each line represents a separate string from the original document.
 
-###Rules:
-1. DO NOT REMOVE ANY LINES FROM THE GIVEN TEXT EVEN EMPTY LINE OR SPACE.
-2. DO NOT CORRECT THE MISTAKES.
-3. Do NOT add a new jobs experiences,BUT you CAN just modify existing lines BUT by minimum edits.
-4. DO NOT add a new PROJECTS,BUT you CAN just modify existing lines,BUT by minimum edits.
-5. You can modify existing lines and add new relevant lines where required.
-6. For technical skills add just names of needed technologies.
-7. The new lines should contain only **important skills or experience related to the job description.
-8. Keep the structure the same (each line remains a separate string).
-9. Return only the modified list in a valid JSON array format.
+Your task is to return the same list but with additional lines where necessary, based on the provided job description.
 
+Rules:
+	1.	DO NOT REMOVE ANY LINES from the given text, including empty lines, spaces, or lines containing only $.
+	2.	If the line contains only “$”, skip modifying it and move to the next line.
+	3.	Do NOT add new job experiences, but you can modify existing experience descriptions with minimal edits.
+	4.	Do NOT add new projects, but you can modify existing project descriptions with minimal edits.
+	5.	You may modify existing lines and add new relevant lines where necessary.
+	6.	For technical skills, only add the names of necessary technologies mentioned in the job description.
+	7.	New lines should contain only important skills or experience relevant to the job description—avoid unnecessary additions.
+	8.	Preserve the original structure (each line remains a separate string).
+	9.	Ensure the response is returned as a valid JSON array.
 
-###Your Task:
-Now, update the following resume text based on this job description:  
-Job Description: {job_description}  
-Old Resume:  
-{resume_lines}  
+Your Task:
 
-**Return the full list with the newly added lines as a valid JSON array of strings, preserving the original order.**
+Now, update the following resume text based on this job description:
+
+Job Description:
+
+{job_description}
+
+Old Resume (List of Lines):
+
+{resume_lines}
+
+Expected Response Format:
+
+Return the full modified list in a valid JSON array format, maintaining the original order. Example output:
+
+[
+    "Skills",
+    "Python",
+    "Java",
+    "JavaScript",
+    "Experience",
+    "$",
+    "Developed front-end applications using React.js and TypeScript.",
+    "Contributed to AI-based automation solutions."
+]

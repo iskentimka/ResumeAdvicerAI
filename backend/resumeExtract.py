@@ -25,6 +25,25 @@ def save_docx_xml(docx_path, output_xml_path):
         xml_file.write(xml_content)
 
 
+def process_text_file(input_file: str, output_file: str):
+    """
+    Reads a text file, checks each line, and replaces empty or whitespace-only lines with '$'.
+    Saves the modified content to a new file.
+    
+    :param input_file: Path to the input .txt file.
+    :param output_file: Path to the output .txt file where the modified content will be saved.
+    """
+    with open(input_file, "r", encoding="utf-8") as infile:
+        lines = infile.readlines()
+
+    # Modify lines: If a line is empty or contains only spaces/newlines, replace it with "$"
+    modified_lines = [line if line.strip() else "$\n" for line in lines]
+
+    # Save the modified content to a new file
+    with open(output_file, "w", encoding="utf-8") as outfile:
+        outfile.writelines(modified_lines)
+
+
 # ------------------------------------------------------------------------------
 # Helper function to extract JSON string from API responses that may be wrapped in markdown code fences.
 # ------------------------------------------------------------------------------
@@ -96,8 +115,10 @@ class ResumeFormatter:
             raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
 
         # Read the prompt template from file.
+        modified_lines_data_path = "resume_lineless.txt"
+        process_text_file(extracted_data_path,modified_lines_data_path)
         try:
-            with open(extracted_data_path, "r", encoding="utf-8") as file:
+            with open(modified_lines_data_path, "r", encoding="utf-8") as file:
                 extracted_data_text = file.read()
         except Exception as e:
             raise Exception(f"Could not read generatePrompt.txt: {str(e)}")
@@ -285,8 +306,7 @@ if __name__ == "__main__":
     txt_output_path = "text_resume.txt"
     resume_path = "resume_test.docx"
     formatter.extract_text_to_json(resume_path, json_output_path, txt_output_path)
-    formatter.gelegate_resume_text(txt_output_path,json_output_path)
-
+    formatter.get_generated_new_text(txt_output_path,job_description)
     
     
     # extracted_data = formatter.extract_editable_parts(text_from_doc)
