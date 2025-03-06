@@ -152,63 +152,6 @@ class ResumeFormatter:
         
         return generated_data
 
-    def gelegate_resume_text(self, extracted_data_text_path : str, extract_data_json_path : str,)-> None:
-        # Read the text from resume file.
-        try:
-            with open(extracted_data_text_path, "r", encoding="utf-8") as file:
-                text = file.read()
-        except Exception as e:
-            raise Exception(f"Could not read extracted_data_text_path file: {str(e)}")
-        
-        # Read the delegate prompt from file.
-        try:
-            with open("delegate_prompt.txt", "r", encoding="utf-8") as file:
-                prompt_base = file.read()
-        except Exception as e:
-            raise Exception(f"Could not read prompt file: {str(e)}")
-        
-        # Read the JSON with strings from file.
-        try:
-            with open(extract_data_json_path, "r", encoding="utf-8") as file:
-                json_content = file.read()
-        except Exception as e:
-            raise Exception(f"Could not read prompt file: {str(e)}")
-
-        extract_data = json.loads(json_content)
-
-        skills = []
-        projects = []
-        experiences = []
-        others = []
-        
-        for str in extract_data:
-            if str['text'] == " " or str['text'] == "" or str['text'] == '\n' or is_any_letters(str['text']) == False: continue
-            prompt = ( prompt_base + 
-                "\n\ Text of resume:\n" + text + "\n"
-                "SKILLS: " + ", ".join(item for item in skills) + "\n" +
-                "PROJECTS: " + ", ".join(item for item in projects) + "\n" +
-                "EXPERIENCE: " + ", ".join(item for item in experiences) + "\n" +
-                "OTHER: " + ", ".join(item for item in others) +
-                "Given string: " + str['text'] + "\n" + 
-                "Return only one word of SKILLS, PROJECTS, EXPERIENCE or OTHER\n"
-            )
-        
-            response = self.openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}]
-            )
-            generated_response = response.choices[0].message.content.strip()
-
-            if (generated_response == "SKILLS"): skills.append(str['text'])
-            if (generated_response == "PROJECTS"): projects.append(str['text'])
-            if (generated_response == "EXPERIENCE"): experiences.append(str['text'])
-            if (generated_response == "OTHER"): others.append(str['text'])
-        
-        print(f"skills: {skills}")
-        print(f"projects: {projects}")
-        print(f"exps: {experiences}")
-        print(f"others: {others}")
-
 
     # --- LaTeX Modification ---
     def replace_text_latex(self, tex_path: str, modified_data, extracted_data) -> str:
@@ -256,7 +199,7 @@ class ResumeFormatter:
     
 
     
-    def extract_text_to_json(self, docx_path: str, output_json_path: str, output_txt_path: str ) -> None:
+    def extract_docx_text_to_json(self, docx_path: str, output_json_path: str, output_txt_path: str ) -> None:
         """
         Extracts text from each run in a DOCX file and saves the result to a JSON file.
         
@@ -287,9 +230,26 @@ class ResumeFormatter:
             json.dump(data, f, indent=2)
         # Save the extracted text into a TXT file
         with open(output_txt_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(text)) 
+            f.write("\n".join(text))
         
-
+    def map_function(self, generated_data_json_path: str, positions_json_path: str, output_json_path: str ) -> None:
+        
+        text = []
+        
+        # for p_idx, paragraph in enumerate(document.paragraphs, start=1):
+        #     for r_idx, run in enumerate(paragraph.runs, start=1):
+        #         text.append(run.text)
+        #         data.append({
+        #             "text": run.text,
+        #             "paragraph": p_idx,
+        #             "run": r_idx
+        #         })
+        
+        # with open(output_json_path, "w", encoding="utf-8") as f:
+        #     json.dump(data, f, indent=2)
+        # # Save the extracted text into a TXT file
+        # with open(output_txt_path, "w", encoding="utf-8") as f:
+        #     f.write("\n".join(text))
 
 
 if __name__ == "__main__":
@@ -305,7 +265,7 @@ if __name__ == "__main__":
     json_output_path = "resume_text_with_runs.json"
     txt_output_path = "text_resume.txt"
     resume_path = "resume_test.docx"
-    formatter.extract_text_to_json(resume_path, json_output_path, txt_output_path)
+    formatter.extract_docx_text_to_json(resume_path, json_output_path, txt_output_path)
     formatter.get_generated_new_text(txt_output_path,job_description)
     
     

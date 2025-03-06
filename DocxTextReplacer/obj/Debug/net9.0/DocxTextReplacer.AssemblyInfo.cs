@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DocxTextReplacer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f501d61715abdb5b625004f9dc1de1f8fe7c37bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93fb0929d83c54cb7a0ba180182f176d4f0bcb7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("DocxTextReplacer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DocxTextReplacer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

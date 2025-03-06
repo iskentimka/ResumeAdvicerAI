@@ -1,0 +1,176 @@
+$
+Rinat Yakubov
+Software Engineer 
+$
+$
+rntkbv@gmail.com
+$
++447423016841
+$
+EDUCATION
+University of St Andrews
+$
+$
+B
+Sc Hons Computer Science
+September 
+2022 
+–
+ current
+$
+St Andrews, UK
+Degree Classification: 
+First
+St George’s British
+International School
+IB Diploma
+$
+$
+$
+$
+$
+$
+$
+SKILLS
+Java
+TypeScript
+Python
+React Native
+Spring Boot
+Express.js / Node.js
+MySQL
+Git & GitHub / GitLab
+Agile & Scrum
+RESTful API
+Interests
+Chess, gym, martial arts, tennis, drums, 
+snow sports
+Languages
+Russian (native),
+ Kyrgyz (native),
+ English (
+proficient
+), Italian (beginner)
+$
+WORK
+$
+EXPERIENCE
+Kyrgyz Embassy to Italy
+Special Assistant to the Ambassador
+$
+$
+$
+May
+$
+202
+4
+$
+–
+$
+August 2024
+P
+articipated in diplomatic meetings and events 
+on behalf of
+ the embassy, including engaging with the Director-General of 
+FAO, visiting MOFA of Italy,
+ and 
+representing the country at
+ the COFO27
+$
+hosted by FAO
+. 
+Authored informative papers on the current diplomatic relations and activities related to Kyrgyzstan and Italy.
+Klank
+Full
+-
+Stack 
+Mobile
+ Developer
+$
+$
+$
+February
+$
+202
+4
+$
+–
+$
+November 2024
+Contributed 
+in
+ the development of a social media mobile application for musicians, 
+using
+ React Native
+ and
+ TypeScript
+$
+for frontend and backend integration. 
+Collaborated closely cross-functional teams to design, develop, and optimize mobile app features, ensuring high-quality performance
+Implemented robust coding practices to build scalable, maintainable, and efficient software solutions.
+Retail Business Owner
+$
+$
+$
+February
+$
+2023
+$
+–
+$
+August 2023
+$
+Founded
+ and operated an online retail platform specializing in LED home décor lamps. 
+Single-handedly managed all facets of the business including finance, 
+web design
+, product sourcing, logistics
+,
+ and marketing.
+Developed and executed digital marketing strategies, including SEO optimization, to drive traffic and increase brand visibility. 
+Utilized eCommerce platforms and tools to streamline order processing and customer management. 
+Game Manager
+RedBull
+ Flick
+$
+$
+$
+June
+$
+2020
+$
+–
+$
+August 2020
+Navigated the gamers on the gaming platform, 
+and 
+the rules of the game. 
+Monitored the gaming matches of various teams to make sure there 
+were
+$
+no
+ rules violations.
+Provided technical support all the time as well as training for junior administrators.
+PROJECTS
+E-commerce Supplement Store
+$
+- 
+TypeScript
+D
+esigned and developed a full-stack e-commerce website for selling supplements, utilizing React, Vite, and Tailwind CSS for the frontend and backend. Integrated Airtable API as a lightweight database solution to manage product listings and inventory efficiently. 
+Restaurant Billing System
+$
+- Java
+Using Java, I created a system 
+that
+ calculates the bill at a restaurant. The user (waiter or admin) 
+can
+ navigate through the system, select/remove items from tables, and proceed to checkout. 
+Taxi Application
+$
+- Flutter
+Collaborated in a team to develop a user-centric taxi application, facilitating efficient ride-hailing services with integrated GPS tracking and seamless payment options
+CERTIFICATIONS
+Google Crash Course on Python 
+Google Foundations of Cybersecurity 
+MIT Introduction to Computer Science and Programming Using Python

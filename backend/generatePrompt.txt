@@ -3,13 +3,15 @@ You are given a list of text lines extracted from a resume. Each line represents
 Your task is to return the same list but with additional lines where necessary, based on the provided job description.
 
 Rules:
-	1.	DO NOT REMOVE ANY LINES from the given text, including empty lines, spaces, or lines containing only $.
-	2.	If the line contains only “$”, skip modifying it and move to the next line.
+	1.	DO NOT REMOVE ANY LINES from the given text, including empty lines, spaces, or lines containing only one character.
+	2.	If the line contains only "$" or one letter or one digit, skip modifying it and move to the next line.
 	3.	Do NOT add new job experiences, but you can modify existing experience descriptions with minimal edits.
 	4.	Do NOT add new projects, but you can modify existing project descriptions with minimal edits.
 	5.	You may modify existing lines and add new relevant lines where necessary.
 	6.	For technical skills, only add the names of necessary technologies mentioned in the job description.
-	7.	New lines should contain only important skills or experience relevant to the job description—avoid unnecessary additions.
+	7.	New lines should contain only important skills or experience relevant to the job descrip
+    
+    tion—avoid unnecessary additions.
 	8.	Preserve the original structure (each line remains a separate string).
 	9.	Ensure the response is returned as a valid JSON array.
 
@@ -36,6 +38,9 @@ Return the full modified list in a valid JSON array format, maintaining the orig
     "JavaScript",
     "Experience",
     "$",
-    "Developed front-end applications using React.js and TypeScript.",
-    "Contributed to AI-based automation solutions."
+    "D",
+    "eveloped front-end applications using React.js and TypeScript.",
+    "Contributed to AI-based automation solutions.",
+    "2",
+    "024"
 ]
